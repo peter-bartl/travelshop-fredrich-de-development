@@ -1,0 +1,60 @@
+<?php
+use Pressmind\HelperFunctions;
+use Pressmind\Travelshop\PriceHandler;
+use Pressmind\Travelshop\Template;
+
+/**
+ * @var array $args
+ */
+?>
+<div class="price-box">
+    <?php
+    echo Template::render(APPLICATION_PATH.'/template-parts/micro-templates/checked-icon.php', []);
+    ?>
+    <div class="col-12">
+        <?php echo Template::render(APPLICATION_PATH.'/template-parts/micro-templates/duration-icon.php', []);?>
+        <?php echo Template::render(APPLICATION_PATH.'/template-parts/micro-templates/duration.php', ['duration' => $args['cheapest_price']->duration]);?>
+    </div>
+    <div class="col-12">
+        <span class="date">
+            <a class="show-dates" data-modal="true" data-modal-id="<?php echo $args['id_modal_price_box']; ?>">
+                <?php echo Template::render(APPLICATION_PATH.'/template-parts/micro-templates/transport-icon.php', ['transport_type' => $args['cheapest_price']->transport_type]);?>
+                <span>
+                    <?php echo Template::render(APPLICATION_PATH.'/template-parts/micro-templates/travel-date-range.php', [
+                        'date_departure' => $args['cheapest_price']->date_departure,
+                        'date_arrival' => $args['cheapest_price']->date_arrival
+                    ]);?>
+                </span>
+            </a>
+        </span>
+    </div>
+    <div class="col-12">
+        <?php echo Template::render(APPLICATION_PATH.'/template-parts/micro-templates/price-mix-icon.php', ['price_mix' => $args['cheapest_price']->price_mix]);?>
+        <div>
+            <?php
+            echo Template::render(APPLICATION_PATH . '/template-parts/micro-templates/offer-description.php', [
+                    'cheapest_price' => $args['cheapest_price']]);
+            ?>
+        </div>
+    </div>
+    <div class="col-12">
+        <?php
+        if (($discount = PriceHandler::getDiscount($args['cheapest_price'])) !== false) {
+            echo Template::render(APPLICATION_PATH.'/template-parts/micro-templates/discount.php', [
+                'cheapest_price' => $args['cheapest_price'],
+                'discount' => $discount,
+            ]);
+        } else {
+            echo Template::render(APPLICATION_PATH.'/template-parts/micro-templates/price.php', [
+                'cheapest_price' => $args['cheapest_price'],
+            ]);
+        } ?>
+    </div>
+    <div class="col-12">
+        <?php echo Template::render(APPLICATION_PATH.'/template-parts/micro-templates/booking-button.php', [
+            'cheapest_price' => $args['cheapest_price'],
+            'url' => $args['url'],
+            'modal_id' => $args['id_modal_price_box']
+        ]);?>
+    </div>
+</div>
